@@ -33,6 +33,10 @@ def parse_args():
     parser.add_argument('--tweet-p', type = float, default = 0.8)
     parser.add_argument('--reply-p', type = float, default = 0.3)
     parser.add_argument('--test', action = 'store_true')
+    parser.add_argument('--consumer-key')
+    parser.add_argument('--consumer-secret')
+    parser.add_argument('--access-token')
+    parser.add_argument('--access-token-secret')
     return parser.parse_args()
 
 
