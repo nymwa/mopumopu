@@ -32,6 +32,8 @@ def parse_args():
     parser.add_argument('--soweli-th', type = float, default = 0.5)
     parser.add_argument('--tweet-p', type = float, default = 0.8)
     parser.add_argument('--reply-p', type = float, default = 0.5)
+    parser.add_argument('--tweet-t', type = float, default = 1.0)
+    parser.add_argument('--reply-t', type = float, default = 1.0)
     parser.add_argument('--test', action = 'store_true')
     parser.add_argument('--consumer-key')
     parser.add_argument('--consumer-secret')
@@ -63,7 +65,9 @@ def get_soweli(args):
             vocab,
             soweli_th = args.soweli_th,
             tweet_p = args.tweet_p,
-            reply_p = args.reply_p)
+            reply_p = args.reply_p,
+            tweet_t = args.tweet_t,
+            reply_t = args.reply_t)
     return soweli
 
 

@@ -12,12 +12,16 @@ class Soweli:
             vocab,
             soweli_th = 0.5,
             tweet_p = 0.8,
-            reply_p = 0.5):
+            reply_p = 0.5,
+            tweet_t = 1.0,
+            reply_t = 1.0):
 
         self.model = model
         self.vocab = vocab
         self.tweet_p = tweet_p
         self.reply_p = reply_p
+        self.tweet_t = tweet_t
+        self.reply_t = reply_t
 
         self.soweli_th = soweli_th
         self.jansoweli = JanSoweliConverter(self.vocab)
@@ -28,7 +32,9 @@ class Soweli:
 
 
     def tweet(self):
-        sent = self.sampler(top_p = self.tweet_p)
+        sent = self.sampler(
+                temperature = self.tweet_t,
+                top_p = self.tweet_p)
 
         if rd.random() < self.soweli_th:
             sent = self.jansoweli(sent)
@@ -46,6 +52,7 @@ class Soweli:
         sent = self.jansoweli(sent)
         sent = self.sampler(
                 sent = sent,
+                temperature = self.reply_t,
                 top_p = self.reply_p,
                 terminal = {self.vocab('"')},
                 min_len = len_utt + 1)
