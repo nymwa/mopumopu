@@ -31,7 +31,7 @@ def parse_args():
     parser.add_argument('--max-len', type = int, default = 256)
     parser.add_argument('--soweli-th', type = float, default = 0.5)
     parser.add_argument('--tweet-p', type = float, default = 0.8)
-    parser.add_argument('--reply-p', type = float, default = 0.3)
+    parser.add_argument('--reply-p', type = float, default = 0.5)
     parser.add_argument('--test', action = 'store_true')
     parser.add_argument('--consumer-key')
     parser.add_argument('--consumer-secret')
