@@ -1,4 +1,5 @@
 from argparse import ArgumentParser
+import sys
 import time
 import torch
 from ponapt.vocab import load_vocab
@@ -31,6 +32,7 @@ def parse_args():
     parser.add_argument('--soweli-th', type = float, default = 0.5)
     parser.add_argument('--tweet-p', type = float, default = 0.8)
     parser.add_argument('--reply-p', type = float, default = 0.3)
+    parser.add_argument('--test', action = 'store_true')
     return parser.parse_args()
 
 
@@ -61,9 +63,8 @@ def get_soweli(args):
     return soweli
 
 
-def main():
-    args = parse_args()
-    soweli = get_soweli(args)
+def bot_main(args):
+    soweli = geyyt_soweli(args)
     twiman = Twiman(
             soweli,
             args.consumer_key,
@@ -75,4 +76,22 @@ def main():
     while True:
         scheduler.run()
         time.sleep(1)
+
+
+def test(args):
+    soweli = get_soweli(args)
+    for _ in range(10):
+        x = soweli.tweet()
+        print(x)
+        y = soweli.reply(x)
+        print(y)
+        print('---')
+
+
+def main():
+    args = parse_args()
+    if args.test:
+        test(args)
+    else:
+        bot_main(args)
 
