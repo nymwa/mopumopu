@@ -64,7 +64,7 @@ def get_soweli(args):
 
 
 def bot_main(args):
-    soweli = geyyt_soweli(args)
+    soweli = get_soweli(args)
     twiman = Twiman(
             soweli,
             args.consumer_key,
