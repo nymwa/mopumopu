@@ -74,7 +74,7 @@ class Twiman:
 
         for mention in timeline:
             try:
-                reply_for_mention(mention)
+                self.reply_for_mention(mention)
             except Exception as e:
                 logger.info('fail: ', e)
 
