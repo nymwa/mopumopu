@@ -19,15 +19,12 @@ logger = getLogger(__name__)
 
 def parse_args():
     parser = ArgumentParser()
-    parser.add_argument('--checkpoint', default = 'bert.pt')
+    parser.add_argument('--checkpoint', default = 'lm.pt')
     parser.add_argument('--vocab', default = 'vocab.txt')
-    parser.add_argument('--hidden-dim', type = int, default = 512)
-    parser.add_argument('--nhead', type = int, default = 8)
-    parser.add_argument('--feedforward-dim', type = int, default = 2048)
-    parser.add_argument('--dropout', type = float, default = 0.3)
-    parser.add_argument('--attention-dropout', type = float, default = 0.2)
-    parser.add_argument('--activation-dropout', type = float, default = 0.2)
-    parser.add_argument('--num-layers', type = int, default = 24)
+    parser.add_argument('--hidden-dim', type = int, default = 1024)
+    parser.add_argument('--nhead', type = int, default = 16)
+    parser.add_argument('--feedforward-dim', type = int, default = 4096)
+    parser.add_argument('--num-layers', type = int, default = 6)
     parser.add_argument('--max-len', type = int, default = 256)
     parser.add_argument('--soweli-th', type = float, default = 0.5)
     parser.add_argument('--tweet-p', type = float, default = 0.8)
@@ -49,9 +46,7 @@ def get_soweli(args):
             args.hidden_dim,
             args.nhead,
             args.feedforward_dim,
-            args.dropout,
-            args.attention_dropout,
-            args.activation_dropout,
+            0, 0, 0, 0,
             args.num_layers,
             padding_idx = vocab.pad,
             max_len = args.max_len)
