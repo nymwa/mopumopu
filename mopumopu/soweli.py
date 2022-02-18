@@ -30,26 +30,34 @@ class Soweli:
         self.preproc = LMPreproc()
         self.postproc = LMPostproc()
 
+    def join_sent(self, sent):
+        return ' '.join([self.vocab[x] for x in sent])
+
+    def jansoweli_cond(self, sent):
+        sent = self.join_sent(sent)
+        name_list = ['Nima', 'Mopumopu', 'Mopu']
+        return all(name not in sent for name in name_list)
 
     def tweet(self):
         sent = self.sampler(
                 temperature = self.tweet_t,
                 top_p = self.tweet_p)
 
-        if rd.random() < self.soweli_th:
+        if (rd.random() < self.soweli_th) and self.jansoweli_cond(sent):
             sent = self.jansoweli(sent)
 
-        sent = ' '.join([self.vocab[x] for x in sent])
+        sent = self.join_sent(sent)
         sent = self.postproc(sent)
         return sent
 
     def reply(self, utt):
         utt = self.preproc(utt)
-        sent = '"{}" "'.format(utt)
+        sent = '" {} " "'.format(utt)
         sent = self.preproc(sent)
         sent = [self.vocab(token) for token in sent.split()]
         len_utt = len(sent)
-        sent = self.jansoweli(sent)
+        if self.jansoweli_cond(sent):
+            sent = self.jansoweli(sent)
         sent = self.sampler(
                 sent = sent,
                 temperature = self.reply_t,
@@ -57,8 +65,9 @@ class Soweli:
                 terminal = {self.vocab('"')},
                 min_len = len_utt + 1)
         sent = sent[len_utt - 1 :]
-        sent = self.jansoweli(sent)
-        sent = ' '.join([self.vocab[x] for x in sent])
+        if self.jansoweli_cond(sent):
+            sent = self.jansoweli(sent)
+        sent = self.join_sent(sent)
         sent = self.postproc(sent)
         sent = sent.strip('"').strip()
         return sent

@@ -63,7 +63,7 @@ class Twiman:
         name = mention.user.screen_name
         stid = mention.id
         text = self.soweli.reply(utt)
-        if len(text) <= 1:
+        if len(text) <= 1 or len(text) >= 200:
             text = 'mu.'
         status = '@{} {}'.format(name, text)
         self.api.update_status(status = status, in_reply_to_status_id = stid)
