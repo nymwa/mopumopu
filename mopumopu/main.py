@@ -5,6 +5,7 @@ import torch
 from ponapt.vocab import load_vocab
 from ponapt.lm import LM
 from .soweli import Soweli
+from .moses import Moses
 from .twiman import Twiman
 from .scheduler import Scheduler
 
@@ -31,6 +32,7 @@ def parse_args():
     parser.add_argument('--reply-p', type = float, default = 0.5)
     parser.add_argument('--tweet-t', type = float, default = 1.0)
     parser.add_argument('--reply-t', type = float, default = 1.0)
+    parser.add_argument('--port', type = int, default = 10101)
     parser.add_argument('--test', action = 'store_true')
     parser.add_argument('--consumer-key')
     parser.add_argument('--consumer-secret')
@@ -83,6 +85,7 @@ def bot_main(args):
 
 def test(args):
     soweli = get_soweli(args)
+    moses = Moses(args.port)
     for _ in range(10):
         x = soweli.tweet()
         print(x)

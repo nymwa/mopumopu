@@ -25,12 +25,14 @@ class Twiman:
     def __init__(
             self,
             soweli,
+            moses,
             consumer_key,
             consumer_secret,
             access_token,
             access_token_secret):
 
         self.soweli = soweli
+        self.moses = moses
         self.api = get_api(
                 consumer_key,
                 consumer_secret,
@@ -62,9 +64,17 @@ class Twiman:
         utt = re.sub(r'@[^ ]+ ', '', mention.text)
         name = mention.user.screen_name
         stid = mention.id
-        text = self.soweli.reply(utt)
-        if len(text) <= 1 or len(text) >= 200:
-            text = 'mu.'
+
+        if utt.strip().startswith('><'):
+            text = re.sub(r'><', '', utt.strip())
+            text = self.moses.reply(text)
+            if len(text) <= 0 or len(text) >= 120:
+                text = 'mu??? mi ken ala ante e toki sina.'
+        else:
+            text = self.soweli.reply(utt)
+            if len(text) <= 1 or len(text) >= 200:
+                text = 'mu.'
+
         status = '@{} {}'.format(name, text)
         self.api.update_status(status = status, in_reply_to_status_id = stid)
         logger.info('reply: {} ({})'.format(status, stid))
