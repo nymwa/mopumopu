@@ -1,5 +1,6 @@
 import re
 import tweepy
+from xml.sax.saxutils import unescape
 
 from logging import getLogger
 logger = getLogger(__name__)
@@ -62,6 +63,7 @@ class Twiman:
 
     def reply_for_mention(self, mention):
         utt = re.sub(r'@[^ ]+ ', '', mention.text)
+        utt = unescape(utt)
         name = mention.user.screen_name
         stid = mention.id
 
