@@ -72,6 +72,7 @@ def bot_main(args):
     soweli = get_soweli(args)
     twiman = Twiman(
             soweli,
+            moses,
             args.consumer_key,
             args.consumer_secret,
             args.access_token,
