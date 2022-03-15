@@ -70,6 +70,7 @@ def get_soweli(args):
 
 def bot_main(args):
     soweli = get_soweli(args)
+    moses = Moses(args.port)
     twiman = Twiman(
             soweli,
             moses,
@@ -86,7 +87,6 @@ def bot_main(args):
 
 def test(args):
     soweli = get_soweli(args)
-    moses = Moses(args.port)
     for _ in range(10):
         x = soweli.tweet()
         print(x)
