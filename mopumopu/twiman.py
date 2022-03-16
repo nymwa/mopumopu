@@ -67,6 +67,10 @@ class Twiman:
         name = mention.user.screen_name
         stid = mention.id
 
+        if name == 'soweli_mopumopu':
+            logger.info('self replying')
+            return
+
         if utt.strip().startswith('><'):
             text = re.sub(r'><', '', utt.strip())
             text = self.moses.reply(text)
