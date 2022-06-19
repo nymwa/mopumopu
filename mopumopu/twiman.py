@@ -61,6 +61,13 @@ class Twiman:
             self.last = timeline[0].id
         return timeline
 
+    def trial_for_mention(self, utt):
+        for _ in range(3):
+            text = self.soweli.reply(utt)
+            if 1 < len(text) < 200:
+                return text
+        return 'mu.'
+
     def reply_for_mention(self, mention):
         utt = re.sub(r'@[^ ]+ ', '', mention.text)
         utt = unescape(utt)
@@ -77,9 +84,7 @@ class Twiman:
             if len(text) <= 0 or len(text) >= 120:
                 text = 'mu??? mi ken ala ante e toki sina.'
         else:
-            text = self.soweli.reply(utt)
-            if len(text) <= 1 or len(text) >= 200:
-                text = 'mu.'
+            text = self.trial_for_mention(utt)
 
         status = '@{} {}'.format(name, text)
         self.api.update_status(status = status, in_reply_to_status_id = stid)
