@@ -6,6 +6,7 @@ from ponapt.vocab import load_vocab
 from ponapt.lm import LM
 from .soweli import Soweli
 from .moses import Moses
+from .kana import Kana
 from .twiman import Twiman
 from .scheduler import Scheduler
 
@@ -71,9 +72,11 @@ def get_soweli(args):
 def bot_main(args):
     soweli = get_soweli(args)
     moses = Moses(args.port)
+    kana = Kana()
     twiman = Twiman(
             soweli,
             moses,
+            kana,
             args.consumer_key,
             args.consumer_secret,
             args.access_token,
