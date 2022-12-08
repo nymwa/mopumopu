@@ -1,6 +1,5 @@
 import random as rd
 from .jansoweli import JanSoweliConverter
-from .addni import AddNi
 from ponapt.generation.sampler import SentenceSampler
 from ponapt.preproc import LMPreproc
 from ponapt.postproc import LMPostproc
@@ -26,7 +25,6 @@ class Soweli:
 
         self.soweli_th = soweli_th
         self.jansoweli = JanSoweliConverter(self.vocab)
-        self.addni = AddNi(self.vocab)
 
         self.sampler = SentenceSampler(self.vocab, self.model)
         self.preproc = LMPreproc()
@@ -39,9 +37,6 @@ class Soweli:
         sent = self.join_sent(sent)
         name_list = ['Nima', 'Mopumopu', 'Mopu', 'Nasa', 'Lunin']
         return all(name not in sent for name in name_list)
-
-    def addni_cond(self, sent):
-        return True
 
     def tweet(self):
         sent = self.sampler(
@@ -72,10 +67,14 @@ class Soweli:
         sent = sent[len_utt - 1 :]
         if self.jansoweli_cond(sent):
             sent = self.jansoweli(sent)
-        if self.addni_cond(sent):
-            sent = self.addni(sent)
         sent = self.join_sent(sent)
         sent = self.postproc(sent)
         sent = sent.strip('"').strip()
+
+        if sent.startswith('li '):
+            sent = 'ni ' + sent
+        if sent.startswith('. '):
+            sent = sent[2:]
+
         return sent
 
