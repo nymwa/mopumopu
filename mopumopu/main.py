@@ -2,8 +2,8 @@ from argparse import ArgumentParser
 import sys
 import time
 import torch
-from ponapt.vocab import load_vocab
-from ponapt.lm import LM
+from ponalm.vocab import load_vocab
+from ponalm.model.lm import PonaLM
 from .soweli import Soweli
 from .moses import Moses
 from .kana import Kana
@@ -23,11 +23,9 @@ def parse_args():
     parser = ArgumentParser()
     parser.add_argument('--checkpoint', default = 'lm.pt')
     parser.add_argument('--vocab', default = 'vocab.txt')
-    parser.add_argument('--hidden-dim', type = int, default = 1024)
-    parser.add_argument('--nhead', type = int, default = 16)
-    parser.add_argument('--feedforward-dim', type = int, default = 4096)
-    parser.add_argument('--num-layers', type = int, default = 6)
-    parser.add_argument('--max-len', type = int, default = 256)
+    parser.add_argument('--hidden-dim', type = int, default = 256)
+    parser.add_argument('--rnn-dim', type = int, default = 256)
+    parser.add_argument('--num-layers', type = int, default = 64)
     parser.add_argument('--soweli-th', type = float, default = 0.5)
     parser.add_argument('--tweet-p', type = float, default = 0.8)
     parser.add_argument('--reply-p', type = float, default = 0.5)
@@ -44,15 +42,13 @@ def parse_args():
 
 def get_soweli(args):
     vocab = load_vocab(args.vocab)
-    model = LM(
+    model = PonaLM(
             len(vocab),
             args.hidden_dim,
-            args.nhead,
-            args.feedforward_dim,
-            0, 0, 0, 0,
+            args.rnn_dim,
+            0, 0,
             args.num_layers,
-            padding_idx = vocab.pad,
-            max_len = args.max_len)
+            padding_idx = vocab.pad)
     model.load_state_dict(torch.load(args.checkpoint, map_location = 'cpu'))
     if torch.cuda.is_available():
         model = model.cuda()

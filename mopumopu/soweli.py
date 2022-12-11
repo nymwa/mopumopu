@@ -1,8 +1,8 @@
 import random as rd
 from .jansoweli import JanSoweliConverter
-from ponapt.generation.sampler import SentenceSampler
-from ponapt.preproc import LMPreproc
-from ponapt.postproc import LMPostproc
+from ponalm.generation.sampler import SentenceSampler
+from ponalm.preproc.preproc import LMPreproc
+from ponalm.preproc.postproc import LMPostproc
 
 class Soweli:
 
