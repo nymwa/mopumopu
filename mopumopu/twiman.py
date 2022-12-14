@@ -26,7 +26,6 @@ class Twiman:
     def __init__(
             self,
             soweli,
-            moses,
             kana,
             consumer_key,
             consumer_secret,
@@ -34,7 +33,6 @@ class Twiman:
             access_token_secret):
 
         self.soweli = soweli
-        self.moses = moses
         self.kana = kana
         self.api = get_api(
                 consumer_key,
@@ -80,12 +78,7 @@ class Twiman:
             logger.info('self replying')
             return
 
-        if utt.strip().startswith('><'):
-            text = re.sub(r'><', '', utt.strip())
-            text = self.moses.reply(text)
-            if len(text) <= 0 or len(text) >= 120:
-                text = 'mu??? mi ken ala ante e toki sina.'
-        elif utt.strip().startswith('もぷ'):
+        if utt.strip().startswith('もぷ'):
             text = re.sub(r'^もぷ', '', utt.strip())
             text = self.kana.pona_to_kana(text)
         else:

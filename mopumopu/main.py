@@ -5,7 +5,6 @@ import torch
 from ponalm.vocab import load_vocab
 from ponalm.model.lm import PonaLM
 from .soweli import Soweli
-from .moses import Moses
 from .kana import Kana
 from .twiman import Twiman
 from .scheduler import Scheduler
@@ -67,11 +66,9 @@ def get_soweli(args):
 
 def bot_main(args):
     soweli = get_soweli(args)
-    moses = Moses(args.port)
     kana = Kana()
     twiman = Twiman(
             soweli,
-            moses,
             kana,
             args.consumer_key,
             args.consumer_secret,
