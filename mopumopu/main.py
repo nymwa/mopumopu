@@ -31,6 +31,8 @@ def parse_args():
     parser.add_argument('--tweet-t', type = float, default = 1.0)
     parser.add_argument('--reply-t', type = float, default = 1.0)
     parser.add_argument('--port', type = int, default = 10101)
+    parser.add_argument('--tweet-interval-minutes', type = int, default = 30)
+    parser.add_argument('--reply-interval-seconds', type = int, default = 30)
     parser.add_argument('--test', action = 'store_true')
     parser.add_argument('--consumer-key')
     parser.add_argument('--consumer-secret')
@@ -74,7 +76,7 @@ def bot_main(args):
             args.consumer_secret,
             args.access_token,
             args.access_token_secret)
-    scheduler = Scheduler(twiman)
+    scheduler = Scheduler(twiman, tweet_interval_minutes = args.tweet_interval_minutes, reply_interval_seconds = args.reply_interval_seconds)
 
     while True:
         scheduler.run()
