@@ -4,6 +4,9 @@ from ponalm.generation.sampler import SentenceSampler
 from ponalm.preproc.preproc import LMPreproc
 from ponalm.preproc.postproc import LMPostproc
 
+from logging import getLogger
+logger = getLogger(__name__)
+
 
 class Soweli:
 
@@ -36,14 +39,23 @@ class Soweli:
         return all(name not in sent for name in name_list)
 
     def tweet(self):
-        sent = self.sampler(
-                temperature = self.tweet_t,
-                top_p = self.tweet_p)
+        sent = self.generate()
 
         if (rd.random() < self.soweli_th) and self.jansoweli_cond(sent):
             sent = self.jansoweli(sent)
 
         sent = self.join_sent(sent)
         sent = self.postproc(sent)
+        return sent
+
+    def generate(self):
+        while True:
+            sent, probs = self.sampler(
+                temperature = self.tweet_t,
+                top_p = self.tweet_p)
+            text = self.join_sent(sent)
+            logger.info('generate: {}'.format(text))
+            if len(text) <= 120:
+                break
         return sent
 
