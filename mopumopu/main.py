@@ -72,6 +72,7 @@ def get_twiman(args):
 
 
 def bot_main(args):
+    logger.info('start soweli')
     twiman = get_twiman(args)
     scheduler = Scheduler(
             twiman,
@@ -83,6 +84,7 @@ def bot_main(args):
 
 
 def bot_test(args):
+    logger.info('start test')
     twiman = get_twiman(args)
     twiman.tweet()
 
